@@ -1,7 +1,8 @@
 from utils import get_db_connection
+import random
+import datetime
 
-con = get_db_connection()
-def create_tables():
+def create_tables(con=get_db_connection()):
   con.executescript('''
   CREATE TABLE IF NOT EXISTS service (
     service_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -18,8 +19,7 @@ def create_tables():
 
   CREATE TABLE IF NOT EXISTS master (
     master_id INT IDENTITY(1,1) PRIMARY KEY,
-    master_name VARCHAR(255) NOT NULL,
-    master_rating DECIMAL(3, 2)
+    master_name VARCHAR(255) NOT NULL
   );
 
   CREATE TABLE IF NOT EXISTS master_service (
@@ -52,7 +52,7 @@ def create_tables():
 
   ''')
 
-def drop_tables():
+def drop_tables(con=get_db_connection()):
   con.executescript('''
   DROP table IF EXISTS service;
   DROP table IF EXISTS client;
@@ -62,7 +62,7 @@ def drop_tables():
   DROP table IF EXISTS review;
   ''')
 
-def gen_service():
+def gen_service(con=get_db_connection()):
   con.executescript('''
   INSERT INTO service(service_name, description, price, duration)
   VALUES 
@@ -73,82 +73,125 @@ def gen_service():
     ('Удаление блох и клещей', 'Удаление блох и клещей с тела домашнего животного', 15, '00:20:00');
   ''')
 
-def gen_master():
-  con.executescript('''
+def gen_master(con=get_db_connection(), master_num=10):
+  
+  m_first = ['Иван', 'Дмитрий', 'Егор', 'Даниил', 'Евгений', 'Василий', 'Артем']
+  f_first = ['Елена','Наталья', 'Надежда', 'Татьяна', 'Анастасия', 'София', 'Маргарита']
+  second = ['Иванов', 'Петров', 'Сидоров', 'Кузнецов', 'Морозов', 'Смирнов', 'Попов', 'Соколов']
+  values = ''
+  
+  for i in range(master_num):
+    if(random.choice([0,1])):
+      f = random.choice(m_first)
+      s = random.choice(second)
+      values += "('" + str(f) + " " + str(s)+ "'), "
+    else:
+      f = random.choice(f_first)
+      s = random.choice(second)
+      values += "('" + str(f) + " " + str(s)+ "а'), "
+  values = values[:len(values)-2] + ';'
+
+  con.executescript(f'''
   INSERT INTO master(master_name)
-  VALUES
-  ('Иван Иванов'),
-  ('Елена Петрова'),
-  ('Алексей Сидоров'),
-  ('Наталья Кузнецова'),
-  ('Дмитрий Морозов');
+  VALUES {values}
   ''')
 
-def gen_client():
-  con.executescript('''
+def gen_client(con=get_db_connection(), client_num=20):
+  first = ['a', 'b', 'c', 'd', 'e', 'f', 'j', 'k', 'l']
+  second = ['wayne', 'cool', 'ron', 'loo', 'maxwell', 'white', 'change', 'hawk']
+  values = ""
+  for i in range(client_num):
+    f = random.choice(first)
+    s = random.choice(second)
+    t = random.randint(0,999)
+    values += "('" + str(f) + "_" + str(s) + str(t) + "'), "
+  values = values[:len(values)-2] + ';'
+
+  con.executescript(f'''
   INSERT INTO client(username)
-  VALUES 
-    ('user1'),
-    ('admin'),
-    ('anonym');
+  VALUES {values}
   ''')
 
-def gen_master_service():
-  con.executescript('''
+def gen_master_service(con=get_db_connection(), service_num=5, master_num=10):
+  time_start = ['08:00:00', '09:00:00', '10:00:00', '11:00:00']
+  time_end = ['16:00:00', '17:00:00', '18:00:00', '19:00:00']
+  values = ''
+  for i in range(master_num):
+    for j in range(service_num):
+      if(random.choice([0,1])):
+        t_start = random.choice(time_start)
+        t_end = random.choice(time_end)
+        values += "(" + str(j+1) + ", " + str(i+1) + ", '" + str(t_start) + "', '" + str(t_end) + "'), "
+  
+  values = values[:len(values)-2] + ';'
+  #return values
+  con.executescript(f'''
   INSERT INTO master_service(service_id, master_id, work_day_start, work_day_end)
-  VALUES
-    (1, 1, '10:00:00', '16:00:00'),
-    (2, 2, '09:00:00', '17:00:00'),
-    (3, 3, '11:00:00', '19:00:00'),
-    (4, 4, '10:00:00', '16:00:00'),
-    (5, 5, '08:00:00', '14:00:00'),
-    (1, 2, '13:00:00', '19:00:00'),
-    (2, 3, '09:00:00', '16:00:00'),
-    (3, 4, '10:00:00', '17:00:00'),
-    (4, 5, '11:00:00', '18:00:00'),
-    (5, 1, '08:00:00', '14:00:00');
+  VALUES {values}
   ''')
 
-def gen_service_order():
-  con.executescript('''
+def gen_service_order(con=get_db_connection(), client_num = 20, service_order_num=50):
+  cursor = con.cursor()
+  cursor.execute('SELECT * FROM master_service')
+  master_service_num = len(cursor.fetchall())
+  values = ''
+  
+  for i in range(service_order_num):
+    client = random.randint(1, client_num)
+    master_service = random.randint(1, master_service_num)
+    date = datetime.datetime(2023, 6, random.randint(10,30), random.randint(11, 15), random.choice([0,15,30,45]))
+    values += '(' + str(client) + ', ' + str(master_service) + ", '" + str(date) + "'), "
+  
+  values = values[:len(values)-2] + ';'
+  con.executescript(f'''
   INSERT INTO service_order(client_id, master_service_id, order_date)
-  VALUES
-    (1, 1, '2023-06-10 10:00:00'),
-    (2, 5, '2023-06-11 13:30:00'),
-    (3, 4, '2023-06-12 15:45:00'),
-    (4, 3, '2023-06-13 09:15:00'),
-    (5, 2, '2023-06-14 12:00:00'),
-    (1, 3, '2023-06-15 14:30:00'),
-    (2, 4, '2023-06-16 16:00:00'),
-    (3, 5, '2023-06-17 11:45:00'),
-    (4, 1, '2023-06-18 10:30:00'),
-    (5, 2, '2023-06-19 13:15:00');
+  VALUES {values}
   ''')
 
-def gen_review():
-  con.executescript('''
+def gen_review(con=get_db_connection(), review_num=20):
+  cursor = con.cursor()
+  cursor.execute('SELECT * FROM service_order')
+  order_num = len(cursor.fetchall())
+  values = ''
+
+  for i in range(review_num):
+    order = random.randint(1, order_num)
+    score = random.choice([1,2,3,4,5])
+    title = '' 
+    desc = ''
+    match score:
+      case 1:
+        title = random.choice(['Ужасно', 'Отвратительно', 'Ужасные мастера'])
+        desc = random.choice(['Ужасный сервис', 'Ужасная работа', 'Не рекомендую', 'Держитесь дальше от этого'])
+      case 2:
+        title = random.choice(['Плохо', 'Очень плохо', 'Ужасная работа', "Ужасно"])
+        desc = random.choice(['Плохие мастера', 'Плохо выполнена работа', 'Буду искать альтернативы', 'Не рекомендую'])
+      case 3:
+        title = random.choice(['Можно и лучше', 'Приемлемо', "Посредственная работа"])
+        desc = random.choice(['Сервис оставляет желать лучшего', 'Ни о чем', 'Не совсем то, чего ожидал', 'Заказывать, только если нет других альтернатив'])
+      case 4:
+        title = random.choice(['Хорошо', 'Понравилось', 'Неплохо'])
+        desc = random.choice(['Хорошая работа', 'Спасибо за сервис', 'Неплохо за свою цену'])
+      case 5:
+        title = random.choice(['Рекомендую', 'Прекрасно', 'Идеально'])
+        desc = random.choice(['Великолепный сервис', 'Буду рекомендовать знакомым', 'Хорошая цена и сервис'])
+    values += "(" + str(order) + ", '" + str(title) + "', '" + str(desc) + "', " + str(score) + "), "
+  
+  values = values[:len(values)-2] + ';'
+  con.executescript(f'''
   INSERT INTO review(order_id, review_title, review_description, review_score)
-  VALUES
-    (1, 'Отличный выгул', 'Мой пес получил отличный выгул. Спасибо!', 5),
-    (2, 'Прекрасное обслуживание', 'Я очень довольна обслуживанием, мой кот был рад.', 4),
-    (3, 'Отличная работа', 'Моя собака выглядит прекрасно после удаления шерсти. Спасибо!', 5),
-    (4, 'Хорошее обслуживание', 'Мой кот был хорошо покормлен и ухожен.', 4),
-    (5, 'Отличный мастер', 'Мастер был очень внимательным и заботился о моей собаке.', 5),
-    (6, 'Хорошее обслуживание', 'Мой кот был хорошо покормлен и ухожен, но работа заняла больше времени, чем я ожидал.', 3),
-    (7, 'Отличный выгул', 'Мой пес был очень доволен выгулом.', 5),
-    (8, 'Прекрасная работа', 'Мой кот был очень доволен удалением шерсти. Спасибо!', 4),
-    (9, 'Хорошее обслуживание', 'Мой пес был хорошо покормлен и ухожен.', 4),
-    (10, 'Отличный мастер', 'Мастер был очень профессиональным и заботился о моей собаке.', 5);
+  VALUES {values}
   ''')
   
 
-def populate():
-  drop_tables()
-  create_tables()
-  gen_service()
-  gen_client()
-  gen_master()
-  gen_master_service()
-  gen_service_order()
-  gen_review()
+def populate(client_num=20, service_num = 5, master_num=10, service_order_num=50, review_num=20):
+  con=get_db_connection()
+  drop_tables(con)
+  create_tables(con)
+  gen_service(con)
+  gen_client(con, client_num)
+  gen_master(con, master_num)
+  gen_master_service(con, service_num, master_num)
+  gen_service_order(con, client_num, service_order_num)
+  gen_review(con, review_num)
 
