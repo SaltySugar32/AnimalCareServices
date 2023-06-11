@@ -105,7 +105,9 @@ def gen_client(con=get_db_connection(), client_num=20):
     s = random.choice(second)
     t = random.randint(0,999)
     values += "('" + str(f) + "_" + str(s) + str(t) + "'), "
-  values = values[:len(values)-2] + ';'
+
+  # наш клиент
+  values += "('v_salty');"
 
   con.executescript(f'''
   INSERT INTO client(username)

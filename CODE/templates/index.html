@@ -8,8 +8,8 @@
     <title>{{title}}</title>
     
     {% macro render_table(table_name, relation) %}
-        <p >
-            <b>{{table_name}} </b>
+        <p class="table-name">
+            {{table_name}}
         </p>
         {% set n = relation|length %}
         <table class="index-table">
@@ -33,7 +33,7 @@
                             {% if rating|float >=0 %}
                             &#11088 {{ '{:.1f}'.format(rating) }}
                             {% else %}
-                                -
+                                &mdash;
                             {% endif %}
                         </td>
                         <td>
@@ -53,7 +53,8 @@
     <div class=menu>
         <ul>
         <li class = active><a href="{{ url_for('index')}}">Главная</a></li>
-        <li><a href="{{ url_for('master_service', id=5)}}">Test</a></li>
+        <li><a href="#">Поиск</a></li>
+        <li><a href="#">Профиль</a></li>
         </ul>
     </div>
     
