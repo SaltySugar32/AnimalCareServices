@@ -7,6 +7,6 @@ from models.master_service_model import get_master_service
 def master_service(id):
     con = get_db_connection()
     master_service = get_master_service(con, id)
-    html = render_template('index.html', title='Услуга', content = master_service.to_html(index=False))
+    html = render_template('master_service.html', title='Услуга', content = master_service.to_html(index=False))
     con.close()
     return html  

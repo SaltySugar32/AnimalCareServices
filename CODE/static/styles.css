@@ -1,0 +1,84 @@
+ /* меню страниц */
+ .menu {
+    background-color: #f1f1f1;
+    box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
+    width: 100%;
+   }
+   /*Теперь уберем маркеры со списка и произведем выравнивание его элементов в одну
+   линию*/
+   .menu li {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+    color: #6f6d6d;
+   }
+   .menu a {
+    text-decoration: none; /* Убирает подчеркивание для ссылок */
+    color: #6f6d6d;
+    }
+
+    body {
+        justify-content: center;
+}
+
+.content {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    background-color: #fff;
+    margin-bottom: 110px;
+    font: bold;
+    justify-content: center;
+}
+
+.index-table {
+    text-align: center;
+    width:90%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.index-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+}
+
+.index-table tr{
+    border: 2px solid grey;
+}
+
+.index-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Sets the background color of even rows to light grey */
+  }
+
+  tr:nth-child(odd) {
+    background-color: #ffffff; /* Sets the background color of odd rows to white */
+  }
+
+.index-table th, td{
+    margin:auto;
+    padding: 10px 5px;
+}
+
+.index-table .button {
+    width:50%;
+    transition-duration: 0.4s;
+    color: black;
+    border: none;
+    border:solid thin green;
+    padding: 14px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+  
+.index-table .button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }

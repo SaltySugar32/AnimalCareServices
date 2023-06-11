@@ -4,7 +4,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styles.css">
     <title>{{title}}</title>
+
+    {% macro render_table(table_name, relation) %}
+        <p >
+            <b>{{table_name}} </b>
+        </p>
+        {% set n = relation|length %}
+        <table class="index-table">
+            <thead>
+                <tr>
+                    <th>service_id</th>
+                    <th>work-hours</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in range(n) %}
+                    <tr>
+                        <td> {{ relation.loc[i, 'service_id'] }} </td>
+                        <td> {{ relation.loc[i, 'work_day_start'] }} - {{ relation.loc[i, 'work_day_end'] }}</td>
+                        <td>
+                            <a href="{{ url_for('master_service', id=relation.loc[i, 'master_service_id']) }}" class="button">
+                                Подробнее ({{ relation.loc[i, 'master_service_id'] }})
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+   {% endmacro %}
+   
+
 </head>
 <body>
     <div class=menu>
@@ -13,6 +45,10 @@
         <li><a href="{{ url_for('master_service', id=5)}}">Test</a></li>
         </ul>
     </div>
-    {{content|safe}}
+    
+    <div class="content"> 
+        {{ render_table('Список услуг', content) }}
+    </div>
+   
 </body>
 </html>

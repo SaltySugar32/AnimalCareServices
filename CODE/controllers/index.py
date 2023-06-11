@@ -7,6 +7,6 @@ from models.index_model import get_master_service_list
 def index():
     con = get_db_connection()
     table = get_master_service_list(con)
-    html = render_template('index.html', title='Главная', content = table.to_html(index=False))
+    html = render_template('index.html', title='Главная', content = table)
     con.close()
     return html
