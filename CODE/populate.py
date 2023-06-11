@@ -5,7 +5,7 @@ import datetime
 def create_tables(con=get_db_connection()):
   con.executescript('''
   CREATE TABLE IF NOT EXISTS service (
-    service_id INT IDENTITY(1,1) PRIMARY KEY,
+    service_id INTEGER PRIMARY KEY AUTOINCREMENT,
     service_name VARCHAR(255) NOT NULL,
     description TEXT,
     price DECIMAL(10, 2),
@@ -13,17 +13,17 @@ def create_tables(con=get_db_connection()):
   );
 
   CREATE TABLE IF NOT EXISTS client (
-    client_id INT IDENTITY(1,1) PRIMARY KEY,
+    client_id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(255) NOT NULL
   );
 
   CREATE TABLE IF NOT EXISTS master (
-    master_id INT IDENTITY(1,1) PRIMARY KEY,
+    master_id INTEGER PRIMARY KEY AUTOINCREMENT,
     master_name VARCHAR(255) NOT NULL
   );
 
   CREATE TABLE IF NOT EXISTS master_service (
-    master_service_id INT IDENTITY(1,1) PRIMARY KEY,
+    master_service_id INTEGER PRIMARY KEY AUTOINCREMENT,
     service_id INT,
     master_id INT,
     work_day_start TIME,
@@ -33,7 +33,7 @@ def create_tables(con=get_db_connection()):
   );
 
   CREATE TABLE IF NOT EXISTS service_order (
-    order_id INT IDENTITY(1,1) PRIMARY KEY,
+    order_id INTEGER PRIMARY KEY AUTOINCREMENT,
     client_id INT,
     master_service_id INT,
     order_date DATE,
@@ -42,7 +42,7 @@ def create_tables(con=get_db_connection()):
   );
 
   CREATE TABLE IF NOT EXISTS review (
-    review_id INT IDENTITY(1,1) PRIMARY KEY,
+    review_id INTEGER PRIMARY KEY AUTOINCREMENT,
     order_id INT,
     review_title VARCHAR(255),
     review_description TEXT,
@@ -153,9 +153,9 @@ def gen_review(con=get_db_connection(), review_num=20):
   cursor.execute('SELECT * FROM service_order')
   order_num = len(cursor.fetchall())
   values = ''
-
-  for i in range(review_num):
-    order = random.randint(1, order_num)
+  order_nums = list(range(1, order_num, 1))
+  sample = random.sample(order_nums, review_num)
+  for order in sample:
     score = random.choice([1,2,3,4,5])
     title = '' 
     desc = ''
@@ -186,12 +186,16 @@ def gen_review(con=get_db_connection(), review_num=20):
 
 def populate(client_num=20, service_num = 5, master_num=10, service_order_num=50, review_num=20):
   con=get_db_connection()
+  # reset tables
   drop_tables(con)
   create_tables(con)
+  # gen data
   gen_service(con)
   gen_client(con, client_num)
   gen_master(con, master_num)
   gen_master_service(con, service_num, master_num)
   gen_service_order(con, client_num, service_order_num)
   gen_review(con, review_num)
+  
+  con.close()
 
