@@ -184,7 +184,7 @@ def gen_review(con=get_db_connection(), review_num=20):
   ''')
   
 
-def populate(client_num=20, service_num = 5, master_num=10, service_order_num=50, review_num=20):
+def populate(client_num=20, service_num = 5, master_num=10, service_order_num=150, review_num=90):
   con=get_db_connection()
   # reset tables
   drop_tables(con)

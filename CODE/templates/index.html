@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/styles.css">
     <title>{{title}}</title>
-
+    
     {% macro render_table(table_name, relation) %}
         <p >
             <b>{{table_name}} </b>
@@ -15,16 +15,27 @@
         <table class="index-table">
             <thead>
                 <tr>
-                    <th>service_id</th>
-                    <th>work-hours</th>
+                    <th>Услуга</th>
+                    <th>Мастер</th>
+                    <th>Рабочие часы</th>
+                    <th>Рейтинг</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for i in range(n) %}
                     <tr>
-                        <td> {{ relation.loc[i, 'service_id'] }} </td>
-                        <td> {{ relation.loc[i, 'work_day_start'] }} - {{ relation.loc[i, 'work_day_end'] }}</td>
+                        <td> {{ relation.loc[i, 'service_name'] }} </td>
+                        <td> {{ relation.loc[i, 'master_name'] }} </td>
+                        <td> {{ relation.loc[i, 'work_day_start'][:5] }} - {{ relation.loc[i, 'work_day_end'][:5] }}</td>
+                        <td> 
+                            {% set rating = relation.loc[i, 'rating'] %}
+                            {% if rating|float >=0 %}
+                            &#11088 {{ '{:.1f}'.format(rating) }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
                         <td>
                             <a href="{{ url_for('master_service', id=relation.loc[i, 'master_service_id']) }}" class="button">
                                 Подробнее ({{ relation.loc[i, 'master_service_id'] }})
