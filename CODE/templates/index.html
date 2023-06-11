@@ -7,6 +7,12 @@
     <title>{{title}}</title>
 </head>
 <body>
-    {{content}}
+    <div class=menu>
+        <ul>
+        <li class = active><a href="{{ url_for('index')}}">Главная</a></li>
+        <li><a href="{{ url_for('master_service', id=5)}}">Test</a></li>
+        </ul>
+    </div>
+    {{content|safe}}
 </body>
 </html>
