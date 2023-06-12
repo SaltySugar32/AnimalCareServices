@@ -1,0 +1,80 @@
+/* для тестов */
+.dataframe{
+    background-color: white;
+    width:100%;
+    border-collapse: collapse;
+    margin-bottom: 1%;
+}
+p{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.main_card {
+    display: flex;
+    flex-direction: row;
+    width:100%;
+}
+
+.service, .reviews, .order{
+    /*padding-bottom: 1%;*/
+    width:100%;
+    background-color: #f9f9f9;
+    border-radius: 20px;
+    display:flex;
+    flex-direction: column;
+    margin:1%;
+    box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
+}
+.service{
+    width:60%;
+}
+.order{
+    width:40%;
+}
+div.description{
+    display:flex;
+    flex-direction: row;
+}
+.field{
+    width:50%;
+    font-size: 1.2em;
+    text-align: right;
+    padding-right: 2em;
+}
+.field > p {
+    font-weight: bold;
+}
+.value{
+    width:50%;
+    font-size: 1.2em;
+    text-align: left;
+}
+
+p.title{
+    padding: 10px;
+    text-align: center;
+    background: linear-gradient(90deg, rgba(4,104,55,1) 0%, rgba(4,104,84,1) 35%, rgba(4,104,99,1) 100%);
+    border-radius: 20px;
+    font-size: xx-large;
+    font-weight: bold;
+    color: white;
+    margin-top: 0px;
+}
+input[type="date"]{
+    position: relative;
+    margin:1% auto;
+    background-color: rgba(4,104,55,1);
+    padding: 15px;
+    /*transform: translate(-50%,-50%);*/
+    color: #ffffff;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+}
+::-webkit-calendar-picker-indicator{
+    background-color: #ffffff;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 20px;
+}

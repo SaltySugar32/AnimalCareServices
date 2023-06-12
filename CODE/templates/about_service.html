@@ -1,6 +1,6 @@
 {% extends('base.html') %}
 {% block style %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/about_service.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/about_service_style.css') }}">
 {% endblock %}
 
 {% block title %}
@@ -8,5 +8,48 @@
 {% endblock %}
 
 {% block body %}
-    {{content|safe}}
+<div class="main_card">
+<div class="service">
+    <p class="title">{{m_service['service_name'].to_string(index=False)}}</p>
+    <div class="description">
+        <div class="field"><p>Мастер</p></div>
+        <p class="value">{{ m_service['master_name'].to_string(index=False) }}</p>
+    </div>
+    <div class="description">
+        <div class="field"><p>Цена</p></div>
+        <div class="value"><p>{{ m_service['price'].to_string(index=False) }} $</p></div>
+    </div>
+    <div class="description">
+        <div class="field"><p>Рабочие часы</p></div>
+        <div class="value"><p>{{ m_service.loc[0,'work_day_start'][:5] }} - {{ m_service.loc[0,'work_day_end'][:5] }} мин</p></div>
+    </div>
+    <div class="description">
+        <div class="field"><p>Продолжительность</p></div>
+        <div class="value"><p>{{ m_service.loc[0,'duration'][:5] }}</p></div>
+    </div>
+    <div class="description">
+        <div class="field"><p>Рейтинг</p></div>
+        <div class="value">
+            <p>
+                {% set rating = m_service.loc[0, 'rating'] %}
+                {% if rating|float > 0 %}
+                    &#11088 {{ '{:.2f}'.format(rating) }} &mdash; {{review_list|length}} Отзыва(-ов)
+                {% else %}
+                    &mdash;
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+<div class="order">
+    <p class="title">Заказ</p>
+    <input type="date" value="{{date_today}}" min="{{date_today}}" max="{{date_max}}">
+    <input type="submit" value="Оформить">
+</div>
+</div>
+<div class="reviews">
+    <p class="title">Отзывы</p>
+    {{review_list.to_html(index=False)|safe}}
+</div>    
+    
 {% endblock %}

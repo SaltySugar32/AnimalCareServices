@@ -18,7 +18,11 @@
             <tr>
                 <td> {{ relation.loc[i, 'service_name'] }} </td>
                 <td> {{ relation.loc[i, 'master_name'] }} </td>
-                <td> {{ relation.loc[i, 'work_day_start'][:5] }} - {{ relation.loc[i, 'work_day_end'][:5] }}</td>
+                <td>
+                    {{ relation.loc[i, 'work_day_start'][:5] }} 
+                    - 
+                    {{ relation.loc[i, 'work_day_end'][:5] }}
+                </td>
                 <td> 
                     {% set rating = relation.loc[i, 'rating'] %}
                     {% if rating|float >=0 %}
@@ -47,8 +51,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/index_style.css') }}">
 {% endblock %}
 
-{% block body %}  
+{% block body %}
     <div class="content"> 
-        {{ render_table('Список услуг', content) }}
+        {{ render_table('Список услуг', m_service_list) }}
     </div>
 {% endblock %}
