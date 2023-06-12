@@ -1,0 +1,73 @@
+.content{
+    width:100%;
+    margin: 0px auto;
+    margin-bottom: 10%;
+}
+
+p.table-name{
+    margin-block-end: 0.1em;
+    padding:20px 10%;
+    border-radius: 20px;
+    color:#ffffff;
+    text-align: center;
+    font-weight: bold;
+    font-size: xx-large;
+    box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(90deg, rgba(4,104,55,1) 0%, rgba(4,104,84,1) 35%, rgba(4,104,99,1) 100%);
+}
+
+.index-table {
+    text-align: center;
+    width:100%;
+    border-collapse: collapse;
+    min-width: 400px;
+    box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+.index-table thead tr {
+    border-radius: 20px;
+    background: linear-gradient(90deg, rgba(4,104,55,1) 0%, rgba(4,104,84,1) 35%, rgba(4,104,99,1) 100%);
+    color: #ffffff;
+}
+
+.index-table tr {
+    border-radius: 20px;
+    border: solid thin #046854;
+}
+
+.index-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Sets the background color of even rows to light grey */
+  }
+
+  tr:nth-child(odd) {
+    background-color: #ffffff; /* Sets the background color of odd rows to white */
+  }
+
+.index-table th{
+    font-size: x-large;
+    padding: 20px 10px;
+}
+
+.index-table td{
+    border: solid thin lightgray;
+    padding: 10px 5px;
+}
+
+.index-table .button {
+    width:50%;
+    transition-duration: 0.4s;
+    color: black;
+    border: none;
+    border:solid thin green;
+    padding: 14px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+  
+.index-table .button:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }

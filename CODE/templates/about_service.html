@@ -1,0 +1,12 @@
+{% extends('base.html') %}
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/about_service.css') }}">
+{% endblock %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block body %}
+    {{content|safe}}
+{% endblock %}
