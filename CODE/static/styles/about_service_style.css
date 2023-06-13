@@ -11,25 +11,32 @@ p{
 }
 .main_card {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     width:100%;
+    padding: 0;
+    margin-bottom: 10%;
 }
 
 .service, .reviews, .order{
     /*padding-bottom: 1%;*/
-    width:100%;
+    width:60%;
+    margin-top: 1%;
     background-color: #f9f9f9;
     border-radius: 20px;
     display:flex;
     flex-direction: column;
-    margin:1%;
     box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
 }
-.service{
-    width:60%;
-}
 .order{
-    width:40%;
+    margin-left:1%;
+    width:39%;
+    position: -webkit-sticky; /* Safari & IE */
+    position: sticky;
+    top:3em;
+}
+.reviews{
+    height:1500px;
 }
 div.description{
     display:flex;

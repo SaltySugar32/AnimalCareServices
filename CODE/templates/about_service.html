@@ -9,47 +9,73 @@
 
 {% block body %}
 <div class="main_card">
-<div class="service">
-    <p class="title">{{m_service['service_name'].to_string(index=False)}}</p>
-    <div class="description">
-        <div class="field"><p>Мастер</p></div>
-        <p class="value">{{ m_service['master_name'].to_string(index=False) }}</p>
-    </div>
-    <div class="description">
-        <div class="field"><p>Цена</p></div>
-        <div class="value"><p>{{ m_service['price'].to_string(index=False) }} $</p></div>
-    </div>
-    <div class="description">
-        <div class="field"><p>Рабочие часы</p></div>
-        <div class="value"><p>{{ m_service.loc[0,'work_day_start'][:5] }} - {{ m_service.loc[0,'work_day_end'][:5] }} мин</p></div>
-    </div>
-    <div class="description">
-        <div class="field"><p>Продолжительность</p></div>
-        <div class="value"><p>{{ m_service.loc[0,'duration'][:5] }}</p></div>
-    </div>
-    <div class="description">
-        <div class="field"><p>Рейтинг</p></div>
-        <div class="value">
-            <p>
-                {% set rating = m_service.loc[0, 'rating'] %}
-                {% if rating|float > 0 %}
-                    &#11088 {{ '{:.2f}'.format(rating) }} &mdash; {{review_list|length}} Отзыва(-ов)
-                {% else %}
-                    &mdash;
-                {% endif %}
-            </p>
+    <div class="service">
+        <p class="title">{{m_service['service_name'].to_string(index=False)}}</p>
+        <div class="description">
+            <div class="field"><p>Мастер</p></div>
+            <p class="value">{{ m_service['master_name'].to_string(index=False) }}</p>
+        </div>
+        <div class="description">
+            <div class="field"><p>Рабочие часы</p></div>
+            <div class="value"><p>{{ m_service.loc[0,'work_day_start'][:5] }} - {{ m_service.loc[0,'work_day_end'][:5] }} мин</p></div>
+        </div>
+        <div class="description">
+            <div class="field"><p>Продолжительность</p></div>
+            <div class="value"><p>{{ m_service.loc[0,'duration'][:5] }}</p></div>
+        </div>
+        <div class="description">
+            <div class="field"><p>Рейтинг</p></div>
+            <div class="value">
+                <p>
+                    {% set rating = m_service.loc[0, 'rating'] %}
+                    {% if rating|float > 0 %}
+                        &#11088 {{ '{:.2f}'.format(rating) }}
+                    {% else %}
+                        &mdash;
+                    {% endif %}
+                </p>
+            </div>
         </div>
     </div>
-</div>
-<div class="order">
-    <p class="title">Заказ</p>
-    <input type="date" value="{{date_today}}" min="{{date_today}}" max="{{date_max}}">
-    <input type="submit" value="Оформить">
-</div>
-</div>
-<div class="reviews">
-    <p class="title">Отзывы</p>
-    {{review_list.to_html(index=False)|safe}}
-</div>    
+    <div class="order">
+        <form action="" method="get">
+            <p class="title">Заказ</p>
+            <div class="description">
+                <div class="field"><p>Цена</p></div>
+                <div class="value"><p>{{ m_service['price'].to_string(index=False) }} $</p></div>
+            </div>
+            
+            <input type="date" value="{{date_today}}" min="{{date_today}}" max="{{date_max}}">
+            <input type="submit" value="Оформить">
+        </form>
+    </div>
+    <div class="reviews">
+        <p class="title">Отзывы ({{review_list|length}})</p>
+
+        {% for i in range(review_list|length) %}
+            <div class="review_card">
+                <h1>
+                    
+                    {% set rating = review_list.loc[i,'review_score'] %}
+                    {{rating}} 
+                    {% for star in range(rating) %}
+                        &starf; 
+                    {% endfor %}
+
+                    {% for star in range(5-rating) %}
+                        &star;
+                    {% endfor %}
+
+                    
+                </h1>
+                <h2>{{review_list.loc[i,'review_title']}}</h2>
+                <h5>{{review_list.loc[i,'username']}}</h5>
+                <p>{{review_list.loc[i,'review_description']}}</p>
+            </div>
+        {% endfor %}
+
+        {{review_list.to_html(index=False)|safe}}
+    </div>  
+</div>  
     
 {% endblock %}
