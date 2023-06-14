@@ -17,6 +17,7 @@ def index():
         'index.html', 
         title='Главная',
         service_list = service_list,
+        service_id = service_id,
         m_service_list = table
     )
     con.close()

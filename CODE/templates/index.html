@@ -33,7 +33,7 @@
                 </td>
                 <td>
                     <a href="{{ url_for('master_service', id=relation.loc[i, 'master_service_id']) }}" class="button">
-                        Подробнее ({{ relation.loc[i, 'master_service_id'] }})
+                        Подробнее
                     </a>
                 </td>
             </tr>
@@ -54,14 +54,14 @@
 {% block body %}
     <form action="{{ url_for('index') }}">
         <p class="search">
-            Сервис:
-            <select name='service'>
-            {% set n = service_list|length %}
-            {% for i in range(n) %}
-            <option value='{{service_list.loc[i, "service_id"]}}'>{{service_list.loc[i, "service_name"]}}</option>
-            {% endfor %}
+            <select name='service' value='{{service_id}}'>
+                <option value="none" selected disabled hidden>Выберите услугу</option>
+                {% set n = service_list|length %}
+                {% for i in range(n) %}
+                    <option value='{{service_list.loc[i, "service_id"]}}'>{{service_list.loc[i, "service_name"]}}</option>
+                {% endfor %}
             </select>
-            <input type=submit value=Отправить>
+            <input class='button' type='submit' value='Поиск услуги'>
         </p>
     </form>
     <div class="content"> 
