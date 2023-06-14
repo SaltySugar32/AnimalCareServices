@@ -52,6 +52,18 @@
 {% endblock %}
 
 {% block body %}
+    <form action="{{ url_for('index') }}">
+        <p class="search">
+            Сервис:
+            <select name='service'>
+            {% set n = service_list|length %}
+            {% for i in range(n) %}
+            <option value='{{service_list.loc[i, "service_id"]}}'>{{service_list.loc[i, "service_name"]}}</option>
+            {% endfor %}
+            </select>
+            <input type=submit value=Отправить>
+        </p>
+    </form>
     <div class="content"> 
         {{ render_table('Список услуг', m_service_list) }}
     </div>

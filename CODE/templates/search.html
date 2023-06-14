@@ -1,6 +1,7 @@
 {% extends('base.html') %}
+
 {% block style %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/about_service_style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/search_style.css') }}">
 {% endblock %}
 
 {% block title %}
@@ -8,7 +9,6 @@
 {% endblock %}
 
 {% block body %}
-    <p>{{date}}</p>
+
     {{content.to_html(index=False)|safe}}
-    {{content2.to_html(index=False)|safe}}
 {% endblock %}
