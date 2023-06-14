@@ -27,8 +27,8 @@
     border-radius: 10px;
 }
 .menu li:hover {
-    color: #046854;;
-    background-color: rgb(167, 218, 186);
+    color: #046854;
+    background-color: #ebeeeb;
 }
 
 .menu a {

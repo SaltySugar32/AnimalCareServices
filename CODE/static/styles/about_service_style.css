@@ -22,7 +22,7 @@ p{
     /*padding-bottom: 1%;*/
     width:60%;
     margin-top: 1%;
-    background-color: #f9f9f9;
+    background-color: #ebeeeb;
     border-radius: 20px;
     display:flex;
     flex-direction: column;
@@ -35,15 +35,15 @@ p{
     position: sticky;
     top:3em;
 }
-.reviews{
-    height:1500px;
-}
+
 div.description{
     display:flex;
     flex-direction: row;
+    margin-top: 10px;
 }
 .field{
     width:50%;
+    vertical-align: middle;
     font-size: 1.2em;
     text-align: right;
     padding-right: 2em;
@@ -53,8 +53,31 @@ div.description{
 }
 .value{
     width:50%;
+    vertical-align: middle;
     font-size: 1.2em;
     text-align: left;
+}
+form {
+    width:100%;
+    margin:0 auto;
+}
+
+input[type='submit'] {
+    width:100%;
+    padding: 10px;
+    font-size: xx-large;
+    font-weight: bold;
+    background: white;
+    border-radius: 20px;
+    border:solid 2px green;
+    margin-top: 10px;
+    color: rgba(4,104,55,1);
+    transition-duration: 0.4s;
+}
+
+input[type='submit']:hover {
+    background: #4CAF50;
+    color:white;
 }
 
 p.title{
@@ -84,4 +107,17 @@ input[type="date"]{
     padding: 5px;
     cursor: pointer;
     border-radius: 20px;
+}
+span {
+    color:rgba(4,104,55,1);
+}
+h1{
+    color: rgba(4,104,55,1);
+}
+.review_card{
+    background-color: #f9f9f9;
+    padding: 1.5em;
+    margin:0.5em;
+    border-radius: 20px;
+    border:solid 2px rgba(4,104,84,1);
 }

@@ -8,5 +8,6 @@
 {% endblock %}
 
 {% block body %}
+    <p>{{date}}</p>
     {{content.to_html(index=False)|safe}}
 {% endblock %}

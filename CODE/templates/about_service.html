@@ -17,7 +17,7 @@
         </div>
         <div class="description">
             <div class="field"><p>Рабочие часы</p></div>
-            <div class="value"><p>{{ m_service.loc[0,'work_day_start'][:5] }} - {{ m_service.loc[0,'work_day_end'][:5] }} мин</p></div>
+            <div class="value"><p>{{ m_service.loc[0,'work_day_start'][:5] }} - {{ m_service.loc[0,'work_day_end'][:5] }}</p></div>
         </div>
         <div class="description">
             <div class="field"><p>Продолжительность</p></div>
@@ -29,7 +29,7 @@
                 <p>
                     {% set rating = m_service.loc[0, 'rating'] %}
                     {% if rating|float > 0 %}
-                        &#11088 {{ '{:.2f}'.format(rating) }}
+                        {{ '{:.2f}'.format(rating) }} &#11088;
                     {% else %}
                         &mdash;
                     {% endif %}
@@ -38,14 +38,18 @@
         </div>
     </div>
     <div class="order">
-        <form action="" method="get">
+        <form action="{{ url_for('order_checkout')}}" method="get">
             <p class="title">Заказ</p>
             <div class="description">
                 <div class="field"><p>Цена</p></div>
                 <div class="value"><p>{{ m_service['price'].to_string(index=False) }} $</p></div>
             </div>
-            
-            <input type="date" value="{{date_today}}" min="{{date_today}}" max="{{date_max}}">
+            <div class="description">
+                <div class="field"><p>Дата</p></div>
+                <div class="value">
+                    <input type="date" name="order_date" value="{{date_today}}" min="{{date_today}}" max="{{date_max}}">
+                </div>
+            </div>
             <input type="submit" value="Оформить">
         </form>
     </div>
@@ -59,11 +63,11 @@
                     {% set rating = review_list.loc[i,'review_score'] %}
                     {{rating}} 
                     {% for star in range(rating) %}
-                        &starf; 
+                        <span class="star_colored">&starf;</span> 
                     {% endfor %}
 
                     {% for star in range(5-rating) %}
-                        &star;
+                        <span class="star_white">&star;</span>
                     {% endfor %}
 
                     
@@ -73,8 +77,6 @@
                 <p>{{review_list.loc[i,'review_description']}}</p>
             </div>
         {% endfor %}
-
-        {{review_list.to_html(index=False)|safe}}
     </div>  
 </div>  
     
