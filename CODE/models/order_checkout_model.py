@@ -1,11 +1,13 @@
 import pandas
 import datetime
 
+# для теста
 def get_order_list(conn, m_service_id):
     df = pandas.read_sql(f"""
     SELECT *
     FROM service_order
     WHERE master_service_id = {m_service_id}
+    ORDER BY order_date
     """, conn)
     return df
 
@@ -36,7 +38,7 @@ def remove_time_slots(time_slots, order_time, delta):
 
     return time_slots
 
-def get_available_time_slots(conn, m_service_id, date):
+def get_available_time_slots(conn, m_service_id, date, step=None):
     m_service_hours = pandas.read_sql(f'''
     SELECT
         work_day_start,
@@ -51,7 +53,8 @@ def get_available_time_slots(conn, m_service_id, date):
     start = m_service_hours['work_day_start'][0]
     delta = m_service_hours['duration'][0]
     end = pandas.Timestamp(m_service_hours['work_day_end'][0]) - pandas.Timedelta(delta)
-    time_slots = pandas.DataFrame({'time': pandas.date_range(start, end, freq='30T').strftime('%H:%M:%S')})
+    freq = step if step else pandas.Timedelta(delta)
+    time_slots = pandas.DataFrame({'time': pandas.date_range(start, end, freq=freq).strftime('%H:%M:%S')})
     
     # get booked time
     order_time = get_order_booked_time(conn,m_service_id, date)
@@ -60,5 +63,12 @@ def get_available_time_slots(conn, m_service_id, date):
     # remove booked slots
     df = remove_time_slots(time_slots, order_time, delta)
     df['time'] = pandas.to_datetime(df['time']).dt.strftime('%H:%M:%S')
-
+    df = df.reset_index()
     return df
+
+def add_order(conn, client_id, m_service_id, date, time):
+    order_date = date + ' ' + time
+    conn.executescript(f'''
+    INSERT INTO service_order (client_id, master_service_id, order_date)
+    VALUES ('{client_id}', '{m_service_id}', '{order_date}')
+    ''')

@@ -8,7 +8,30 @@
 {% endblock %}
 
 {% block body %}
-    <p>{{date}}</p>
+    <div class="order">
+        <form action="" method="post">
+            <p class="title">Заказ</p>
+            <div class="description">
+                <div class="field"><p>Цена</p></div>
+                <div class="value"><p>{{ m_service.loc[0,'price'] }} $</p></div>
+            </div>
+            <div class="description">
+                <div class="field"><p>Дата</p></div>
+                <div class="value"><p>{{ date }}</p></div>
+            </div>
+            <div class="description">
+                <div class="field"><p>Время</p></div>
+                <div class="value">
+                    <select name='time'>
+                        {% set n = time_slots|length %}
+                        {% for i in range(n) %}
+                            <option value='{{time_slots.loc[i, "time"]}}'>{{ time_slots.loc[i, "time"][:5] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <input type="submit" value="Оформить">
+        </form>
+    </div>
     {{content.to_html(index=False)|safe}}
-    {{content2.to_html(index=False)|safe}}
 {% endblock %}

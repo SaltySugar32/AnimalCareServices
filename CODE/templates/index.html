@@ -52,13 +52,21 @@
 {% endblock %}
 
 {% block body %}
+    <script>
+        if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
     <form action="{{ url_for('index') }}">
         <p class="search">
             <select name='service' value='{{service_id}}'>
-                <option value="none" selected disabled hidden>Выберите услугу</option>
                 {% set n = service_list|length %}
                 {% for i in range(n) %}
-                    <option value='{{service_list.loc[i, "service_id"]}}'>{{service_list.loc[i, "service_name"]}}</option>
+                    {% if service_list.loc[i, "service_id"]|int == service_id|int %}
+                        <option selected value='{{service_list.loc[i, "service_id"]}}'>{{service_list.loc[i, "service_name"]}}</option>
+                    {% else %}
+                        <option value='{{service_list.loc[i, "service_id"]}}'>{{service_list.loc[i, "service_name"]}}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
             <input class='button' type='submit' value='Поиск услуги'>

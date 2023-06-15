@@ -66,8 +66,6 @@ input.button{
 select, option {
     width:90%;
     border-radius: 10px;
-}
-select, option {
     font-size: large;
     padding: 0.2em;
 }
